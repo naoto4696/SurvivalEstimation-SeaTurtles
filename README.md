@@ -11,6 +11,8 @@ Width_Radius.R ... conducting estimation of growth curves of humeri.
 SCL_Radius.R ... conducting estimation of relationships between SCL and Radius of humeri.
 SCLdistribution.R ... conducting catch-curve analysis using prior distribution obtained from above 2 estimation.
 
+ExistingMethod.R ... conducting existing catch-curve analysis.
+
 Sample_WR ... sample humerus data consists of relationships between humerus radius and humerus width.
 Sample_SR ... sample SCL and humerus data consists of relationships between SCL and humerus radius.
 Sample_SCL ... sample SCL distribution data.
