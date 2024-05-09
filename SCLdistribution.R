@@ -368,7 +368,7 @@ for(i in cplotseq){
   }
 plot(Lseq,Berta_curve(mcmc[realsteps,1],mcmc[realsteps,2],Lseq),type="l",
      xlab="SCL",ylab="age",col=rgb(1, 0, 0, alpha=0.003),
-     xlim=c(0,100), ylim=c(0,60), main="SCL distribution")
+     xlim=c(0,100), ylim=c(0,60), main="Growth Curve")
 
 plot(SCL,Number,type="h",xlab="SCL",ylab="N",
      xlim=c(50,100),ylim=c(0,max(Number)+10),main="SCL distribution")
