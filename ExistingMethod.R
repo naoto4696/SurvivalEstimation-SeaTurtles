@@ -1,9 +1,9 @@
 setwd("~/Desktop")
 
 # reading data
-SCL_Radius <- read.csv("~/Desktop/Program_latest/SCL_Radius.csv")
-Width_Radius <- read.csv("~/Desktop/Program_latest/Width_Radius.csv")
-Realdata <- read.csv("~/Desktop/Program_latest/Muroto.csv")
+SCL_Radius <- read.csv("~/Desktop/Program/Sample_SR.csv")
+Width_Radius <- read.csv("~/Desktop/Program/Sample_WR.csv")
+Realdata <- read.csv("~/Desktop/Program/Sample_SCL.csv")
 Realdata <- Realdata[57:97,]
 
 # setting
