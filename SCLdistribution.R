@@ -1,7 +1,7 @@
 
 # Simulation parameter
 count <- 0
-realsteps <- 1000000 # number of steps
+realsteps <- 5000000 # number of steps
 burnin <- realsteps/100
 nsteps <- realsteps + burnin
 skipsteps <- 10 #Skip Mcmc steps for move Populaiton coefficient and Survival rate
@@ -254,6 +254,7 @@ Init_Gc <- Pri_M_Gc #known
 Init_Gv <- 0.5 
 Init_Cv <- 25 
 Init_Mr <- 0.15
+Init_Sr <- 1 - Init_Mr 
 Init_Nf <- 3*sum(Number)
 
 mcmc <- matrix(0,ncol=6,nrow=nsteps+1)
@@ -307,7 +308,7 @@ M_Lm <- mean(mcmc[-(1:burnin),1])
 M_Gc <- mean(mcmc[-(1:burnin),2])
 M_Gv <- mean(mcmc[-(1:burnin),3])
 M_Cv <- mean(mcmc[-(1:burnin),4])
-M_Mr <- mean(1-mcmc[-(1:burnin),5])
+M_Sr <- mean(1-mcmc[-(1:burnin),5])
 M_Nf <- mean(mcmc[-(1:burnin),6])
 
 # 95%HDI
@@ -322,8 +323,8 @@ LowHDI_Gv <- hdi(Dens3,ci=HDIwidth)[1]
 HighHDI_Gv <- hdi(Dens3,ci=HDIwidth)[2]
 LowHDI_Cv <- hdi(Dens4,ci=HDIwidth)[1]
 HighHDI_Cv <- hdi(Dens4,ci=HDIwidth)[2]
-LowHDI_Mr <- hdi(Dens5,ci=HDIwidth)[1]
-HighHDI_Mr <- hdi(Dens5,ci=HDIwidth)[2]
+LowHDI_Sr <- hdi(Dens5,ci=HDIwidth)[1]
+HighHDI_Sr <- hdi(Dens5,ci=HDIwidth)[2]
 LowHDI_Nf <- hdi(Dens6,ci=HDIwidth)[1]
 HighHDI_Nf <- hdi(Dens6,ci=HDIwidth)[2]
 
@@ -368,7 +369,7 @@ for(i in cplotseq){
   }
 plot(Lseq,Berta_curve(mcmc[realsteps,1],mcmc[realsteps,2],Lseq),type="l",
      xlab="SCL",ylab="age",col=rgb(1, 0, 0, alpha=0.003),
-     xlim=c(0,100), ylim=c(0,60), main="Growth Curve")
+     xlim=c(0,100), ylim=c(0,60), main="SCL distribution")
 
 plot(SCL,Number,type="h",xlab="SCL",ylab="N",
      xlim=c(50,100),ylim=c(0,max(Number)+10),main="SCL distribution")
@@ -430,10 +431,10 @@ abline(v=Init_Cv,lty=3,col=3,lwd=1.5)
 
 plot(-100,-100,xlim=c(min(Dens5$x),max(Dens5$x)),ylim=c(min(Dens5$y),max(Dens5$y)),xlab="",ylab="Density",main="Survival Rate")
 lines(Dens5,lwd=1,col=1)
-abline(v=M_Mr,lty=1,col=2,lwd=1)
-abline(v=LowHDI_Mr,lty=3,col=2,lwd=1.5)
-abline(v=HighHDI_Mr,lty=3,col=2,lwd=1.5)
-abline(v=Init_Mr,lty=3,col=3,lwd=1.5)
+abline(v=M_Sr,lty=1,col=2,lwd=1)
+abline(v=LowHDI_Sr,lty=3,col=2,lwd=1.5)
+abline(v=HighHDI_Sr,lty=3,col=2,lwd=1.5)
+abline(v=Init_Sr,lty=3,col=3,lwd=1.5)
 
 plot(-100,-100,xlim=c(min(Dens6$x),max(Dens6$x)),ylim=c(min(Dens6$y),max(Dens6$y)),xlab="",ylab="Density",main="Pupulation Coefficient")
 lines(Dens6,lwd=1,col=1)
@@ -464,7 +465,7 @@ StatisticalResults[1,-1] <- round(c(LowHDI_Lm,M_Lm,HighHDI_Lm),digits=3)
 StatisticalResults[2,-1] <- round(c(LowHDI_Gc,M_Gc,HighHDI_Gc),digits=4)
 StatisticalResults[3,-1] <- round(c(LowHDI_Gv,M_Gv,HighHDI_Gv),digits=3)
 StatisticalResults[4,-1] <- round(c(LowHDI_Cv,M_Cv,HighHDI_Cv),digits=2)
-StatisticalResults[5,-1] <- round(c(LowHDI_Mr,M_Mr,HighHDI_Mr),digits=3)
+StatisticalResults[5,-1] <- round(c(LowHDI_Sr,M_Sr,HighHDI_Sr),digits=3)
 StatisticalResults[6,-1] <- round(c(LowHDI_Nf,M_Nf,HighHDI_Nf),digits=-1)
 
 write.csv(as.data.frame(StatisticalResults),"StatisticalResults_SCLdistribution.csv")

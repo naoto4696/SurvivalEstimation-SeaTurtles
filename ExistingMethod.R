@@ -99,11 +99,11 @@ lm_result_St <- lm(Num~age)
 Intercept_St <- lm_result_St$coefficients[1]
 Coef_St <- lm_result_St$coefficients[2]
 
+Sr <- 1-Coef_St
+
 xlongseq <- seq(1,1000,0.01)
 tlongseq <- Lm*(1-exp(-Gc*xlongseq))
 ylongseq <- exp(Intercept_St+xlongseq*Coef_St)
-
-print(paste0("Survival rate is estimated as ", 1+Coef_St))
 
 # fit plot
 
@@ -119,3 +119,17 @@ mtext("SCL(cm)", side = 1, line =3)
 axis(2, at = pretty(Number), labels = pretty(Number))
 mtext("Observed Number", side = 2, line = 3)
 dev.off()
+
+# list
+
+StatisticalResults <- matrix(ncol=2,nrow=5)
+colnames(StatisticalResults) <- c("Name","Result")
+StatisticalResults[,1] <- c("Maximum humerus radius Hm","Regression coefficient C",
+                            "Maximum carapace length Lm","Growth coefficient Gc","Survival rate Sr")
+StatisticalResults[1,-1] <- round(Hm,digits=5)
+StatisticalResults[2,-1] <- round(C,digits=5)
+StatisticalResults[3,-1] <- round(Lm,digits=3)
+StatisticalResults[4,-1] <- round(Gc,digits=4)
+StatisticalResults[5,-1] <- round(Sr,digits=3)
+
+write.csv(as.data.frame(StatisticalResults),"StatisticalResults_ExistingMethod.csv")
