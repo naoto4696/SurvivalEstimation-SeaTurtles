@@ -1,10 +1,12 @@
 setwd("~/Desktop")
 
 # reading data
-SCL_Radius <- read.csv("~/Desktop/Program/Sample_SR.csv")
-Width_Radius <- read.csv("~/Desktop/Program/Sample_WR.csv")
-Realdata <- read.csv("~/Desktop/Program/Sample_SCL.csv")
-Realdata <- Realdata[57:97,]
+SCL_Radius <- read.csv("~/Desktop/Program/SCL_Radius.csv")
+Width_Radius <- read.csv("~/Desktop/Program/Width_Radius.csv")
+Realdata <- read.csv("~/Desktop/Program/Muroto.csv")
+
+dir.create("~/Desktop/Result_ExistingMethod")
+setwd("~/Desktop/Result_ExistingMethod")
 
 # setting
 SCL <- as.vector(as.ts(SCL_Radius$SCL/10)) # Convert mm to cm
@@ -14,9 +16,8 @@ Radius <- Radius[is.na(Radius)==F]
 
 # estimation
 
-lm_result_SR <- lm(SCL~Radius) 
-Intercept_SR <- lm_result_SR$coefficients[1]
-Coef_SR <- lm_result_SR$coefficients[2]
+lm_result_SR <- lm(SCL~Radius-1) 
+Coef_SR <- lm_result_SR$coefficients[1]
 
 C <- Coef_SR
 
@@ -28,7 +29,7 @@ plot(Radius,SCL, type="p", xlab="", ylab="",
      xlim=c(min(Radius),max(Radius)), ylim=c(min(SCL),max(SCL)),
      xaxt="n",yaxt="n", pch=20,
      panel.first=grid(col="grey", lty=2))
-abline(Intercept_SR, Coef_SR, col="blue", lwd=1.5)
+abline(0, Coef_SR, col="blue", lwd=1.5)
 axis(1, at = pretty(Radius), labels = pretty(Radius))
 mtext("Radius(mm)", side = 1, line =3)
 axis(2, at = pretty(SCL), labels = pretty(SCL))
@@ -67,8 +68,22 @@ mtext("Width(mm)", side = 2, line = 3)
 dev.off()
 
 #setting
-SCL <- as.vector(as.ts(Realdata$SCL))
-Number <- as.vector(as.ts(Realdata$Number))
+SCL <- as.ts(Realdata$SCL)
+Number <- as.ts(Realdata$Number)
+for(i in 1:length(Number)){
+  if(Number[i]>0){
+    minorder <- i
+    break
+  }
+}
+for(i in length(Number):1){
+  if(Number[i]>0){
+    Maxorder <- i
+    break
+  }
+}
+SCL <- SCL[minorder:Maxorder]
+Number <- Number[minorder:Maxorder]
 N_max_point <- which.max(Number)
 
 Lm <- C*Hm
@@ -88,7 +103,7 @@ xlongseq <- seq(1,1000,0.01)
 tlongseq <- Lm*(1-exp(-Gc*xlongseq))
 ylongseq <- exp(Intercept_St+xlongseq*Coef_St)
 
-print(paste0("Survival rate is", 1+Coef_St))
+print(paste0("Survival rate is estimated as ", 1+Coef_St))
 
 # fit plot
 
