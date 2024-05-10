@@ -99,7 +99,7 @@ lm_result_St <- lm(Num~age)
 Intercept_St <- lm_result_St$coefficients[1]
 Coef_St <- lm_result_St$coefficients[2]
 
-Sr <- 1-Coef_St
+Sr <- 1+Coef_St
 
 xlongseq <- seq(1,1000,0.01)
 tlongseq <- Lm*(1-exp(-Gc*xlongseq))
